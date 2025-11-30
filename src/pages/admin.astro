@@ -1,0 +1,337 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE_BASE } from '../consts'
+---
+
+<BaseLayout title="Admin | Kinghermy" description="Local editor to draft posts.">
+	<section class="app-container pt-32 pb-16 space-y-8" id="admin-root">
+		<div class="flex items-start justify-between gap-4">
+			<div class="space-y-3">
+				<div class="pill w-fit">Local-only</div>
+				<h1 class="text-4xl sm:text-5xl font-black tracking-tight">
+					Post Builder (local)
+				</h1>
+				<p class="text-lg max-w-3xl opacity-85 leading-relaxed">
+					Use this to draft a new blog post. It will generate a Markdown file
+					with frontmatter you can download or copy, then place into
+					<code>src/content/blog/</code>. No content is uploaded anywhere.
+				</p>
+			</div>
+			<div class="pill">Base path: {SITE_BASE || '/'}</div>
+		</div>
+
+		<div class="grid lg:grid-cols-[2fr,1fr] gap-6">
+			<form
+				id="post-form"
+				class="card-surface rounded-2xl p-8 space-y-5"
+				novalidate
+			>
+				<div class="grid md:grid-cols-2 gap-4">
+					<label class="space-y-2">
+						<span class="font-semibold">Title</span>
+						<input
+							name="title"
+							required
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+							placeholder="My next post"
+						/>
+					</label>
+					<label class="space-y-2">
+						<span class="font-semibold">Slug (optional)</span>
+						<input
+							name="slug"
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+							placeholder="my-next-post"
+						/>
+						<p class="text-sm opacity-70">
+							Leave empty to auto-generate from title.
+						</p>
+					</label>
+				</div>
+
+				<label class="space-y-2 block">
+					<span class="font-semibold">Description</span>
+					<textarea
+						name="description"
+						required
+						class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3 min-h-[120px]"
+						placeholder="Short summary that appears on cards and RSS."
+					></textarea>
+				</label>
+
+				<div class="grid md:grid-cols-2 gap-4">
+					<label class="space-y-2">
+						<span class="font-semibold">Publish date</span>
+						<input
+							name="pubDate"
+							type="date"
+							required
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+						/>
+					</label>
+					<label class="space-y-2">
+						<span class="font-semibold">Cover image credit (optional)</span>
+						<input
+							name="coverImageCredit"
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+							placeholder="Photo by ..."
+						/>
+					</label>
+				</div>
+
+				<label class="space-y-2 block">
+					<span class="font-semibold">Content (Markdown)</span>
+					<textarea
+						name="content"
+						required
+						class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3 min-h-[260px]"
+						placeholder="## Heading&#10;Body text goes here..."
+					></textarea>
+				</label>
+
+				<div class="flex flex-wrap gap-3">
+					<button type="submit" class="btn-primary">Generate Markdown</button>
+					<button type="button" id="copy-btn" class="btn-secondary">
+						Copy to clipboard
+					</button>
+					<button type="button" id="download-btn" class="btn-secondary">
+						Download .md
+					</button>
+				</div>
+				<p class="text-sm opacity-70">
+					Cover image path: place your image at
+					<code>src/assets/blogimages/&lt;slug&gt;/cover.jpg</code>.
+				</p>
+			</form>
+
+			<div class="card-surface rounded-2xl p-6 space-y-4">
+				<h3 class="text-2xl font-semibold">Preview</h3>
+				<pre
+					id="output"
+					class="text-sm whitespace-pre-wrap bg-black/80 text-white p-4 rounded-lg min-h-[200px] overflow-auto"
+				></pre>
+			</div>
+		</div>
+
+		<div class="grid lg:grid-cols-3 gap-6">
+			<div class="card-surface rounded-2xl p-6 space-y-3 lg:col-span-2">
+				<h3 class="text-2xl font-semibold">Image helper</h3>
+				<p class="opacity-80 text-sm">
+					Images are not uploaded here. Place them at
+					<code>src/assets/blogimages/&lt;slug&gt;/</code> and use the generated
+					markdown snippet.
+				</p>
+				<div class="grid md:grid-cols-2 gap-4">
+					<label class="space-y-2">
+						<span class="font-semibold">Image file name</span>
+						<input
+							id="image-name"
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+							placeholder="cover.jpg or screenshot.png"
+						/>
+					</label>
+					<label class="space-y-2">
+						<span class="font-semibold">Alt text</span>
+						<input
+							id="image-alt"
+							class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3"
+							placeholder="Describe the image"
+						/>
+					</label>
+				</div>
+				<div class="flex flex-wrap gap-3">
+					<button type="button" id="image-generate" class="btn-secondary">
+						Generate image markdown
+					</button>
+					<button type="button" id="image-copy" class="btn-secondary">
+						Copy snippet
+					</button>
+				</div>
+				<pre
+					id="image-output"
+					class="text-sm whitespace-pre bg-black/80 text-white p-3 rounded-lg min-h-[80px] overflow-auto"
+				></pre>
+			</div>
+
+			<div class="card-surface rounded-2xl p-6 space-y-3">
+				<h3 class="text-2xl font-semibold">How to publish</h3>
+				<ol class="list-decimal list-inside space-y-2 text-sm opacity-90">
+					<li>Fill the form and generate the markdown.</li>
+					<li>Download it as <code>&lt;slug&gt;.md</code>.</li>
+					<li>
+						Save it to <code>src/content/blog/&lt;slug&gt;.md</code> and place
+						<code>cover.jpg</code> at
+						<code>src/assets/blogimages/&lt;slug&gt;/cover.jpg</code>.
+					</li>
+					<li>Run <code>npm run dev</code> to preview locally.</li>
+					<li>Commit and push to publish via GitHub Pages.</li>
+				</ol>
+				<p class="text-xs opacity-70">
+					Direct posting from this page is not possible without a backend or
+					CMS. This is a static site.
+				</p>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<script is:inline>
+	const ACCESS_CODE = 'kinghermy' // simple gate; change as needed
+
+	function toSlug(text) {
+		return text
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '')
+	}
+
+	function escapeSingleQuotes(str) {
+		return str.replace(/'/g, "''")
+	}
+
+	const form = document.getElementById('post-form')
+	const output = document.getElementById('output')
+	const copyBtn = document.getElementById('copy-btn')
+	const downloadBtn = document.getElementById('download-btn')
+	const adminRoot = document.getElementById('admin-root')
+
+	const imageName = document.getElementById('image-name')
+	const imageAlt = document.getElementById('image-alt')
+	const imageGenerate = document.getElementById('image-generate')
+	const imageCopy = document.getElementById('image-copy')
+	const imageOutput = document.getElementById('image-output')
+
+	let latestContent = ''
+
+	function buildMarkdown(data) {
+		const slug = data.slug || toSlug(data.title)
+		const date = data.pubDate || new Date().toISOString().slice(0, 10)
+
+		const frontmatterLines = [
+			'---',
+			`title: '${escapeSingleQuotes(data.title)}'`,
+			'description: |',
+			`  ${data.description.trim().replace(/\n/g, '\n  ')}`,
+			`pubDate: '${date}'`,
+		]
+
+		if (data.coverImageCredit) {
+			frontmatterLines.push(
+				`coverImageCredit: '${escapeSingleQuotes(data.coverImageCredit)}'`
+			)
+		}
+
+		frontmatterLines.push('---')
+
+		const body = data.content.trim()
+		const content = `${frontmatterLines.join('\n')}\n\n${body}\n`
+		return { content, slug }
+	}
+
+	function setOutput(text) {
+		output.textContent = text
+		latestContent = text
+	}
+
+	function getFormData() {
+		const formData = new FormData(form)
+		return {
+			title: (formData.get('title') || '').toString(),
+			slug: (formData.get('slug') || '').toString(),
+			description: (formData.get('description') || '').toString(),
+			pubDate: (formData.get('pubDate') || '').toString(),
+			coverImageCredit: (formData.get('coverImageCredit') || '').toString(),
+			content: (formData.get('content') || '').toString(),
+		}
+	}
+
+	function updatePreview() {
+		const data = getFormData()
+		if (!data.title || !data.description || !data.content) {
+			setOutput('Fill title, description, and content to see preview.')
+			return
+		}
+		const { content } = buildMarkdown(data)
+		setOutput(content)
+	}
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault()
+		updatePreview()
+	})
+
+	copyBtn?.addEventListener('click', () => {
+		updatePreview()
+		if (!latestContent) {
+			setOutput('Please generate content first.')
+			return
+		}
+		navigator.clipboard?.writeText(latestContent)
+		setOutput('Copied to clipboard.\n\n' + latestContent)
+	})
+
+	downloadBtn?.addEventListener('click', () => {
+		updatePreview()
+		const data = getFormData()
+		const { content, slug } = buildMarkdown(data)
+		const blob = new Blob([content], { type: 'text/markdown' })
+		const url = URL.createObjectURL(blob)
+		const a = document.createElement('a')
+		a.href = url
+		a.download = `${slug || 'new-post'}.md`
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
+		URL.revokeObjectURL(url)
+		setOutput('Downloaded markdown file.\n\n' + content)
+	})
+
+	form?.addEventListener('input', () => {
+		updatePreview()
+	})
+
+	imageGenerate?.addEventListener('click', () => {
+		const slugInput = document.querySelector('[name="slug"]')
+		const titleInput = document.querySelector('[name="title"]')
+		const slug = (slugInput?.value || toSlug(titleInput?.value || '')).trim()
+		const name = (imageName?.value || 'image.jpg').trim()
+		const alt = (imageAlt?.value || 'Image').trim()
+		if (!slug) {
+			imageOutput.textContent = 'Add a title or slug first.'
+			return
+		}
+		const snippet = `![${alt}](../../assets/blogimages/${slug}/${name})`
+		imageOutput.textContent = snippet
+	})
+
+	imageCopy?.addEventListener('click', () => {
+		if (!imageOutput.textContent) {
+			imageOutput.textContent = 'Generate snippet first.'
+			return
+		}
+		navigator.clipboard?.writeText(imageOutput.textContent)
+		imageOutput.textContent = 'Copied.\n' + imageOutput.textContent
+	})
+
+	// Simple client-side gate (not secure; local-only)
+	function requireAccess() {
+		const hasAccess =
+			localStorage.getItem('adminAccessGranted') === 'true' ||
+			ACCESS_CODE === ''
+		if (hasAccess) {
+			adminRoot?.classList.remove('blur-sm', 'pointer-events-none')
+			return
+		}
+		const code = prompt('Enter admin access code')
+		if (code === ACCESS_CODE) {
+			localStorage.setItem('adminAccessGranted', 'true')
+			adminRoot?.classList.remove('blur-sm', 'pointer-events-none')
+		} else {
+			alert('Incorrect code. Reload to try again.')
+			adminRoot?.classList.add('blur-sm', 'pointer-events-none')
+		}
+	}
+
+	requireAccess()
+</script>

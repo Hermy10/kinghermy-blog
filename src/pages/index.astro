@@ -5,79 +5,128 @@ import { Icon } from 'astro-icon/components'
 import BlogCard from '../components/BlogCard.astro'
 import { getCollection } from 'astro:content'
 
-const posts = (await getCollection('blog'))
+const allPosts = await getCollection('blog')
+const posts = allPosts
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 4)
+const totalPosts = allPosts.length
 ---
 
 <BaseLayout>
-	<main
-		class="app-container flex flex-col gap-12 justify-center py-36 md:py-48 pt-44 md:pt-56 relative"
-	>
-		<div>
-			<p class="block text-3xl opacity-70 mt-9 mb-4">Welcome to</p>
-			<h1 class="text-8xl font-bold leading-none">Saral Theme</h1>
+	<main class="app-container relative py-28 md:py-36">
+		<div class="absolute inset-0 blur-3xl opacity-40 pointer-events-none">
+			<div class="w-72 h-72 bg-primary/40 rounded-full absolute -left-12 top-0"></div>
+			<div class="w-80 h-80 bg-primary/30 rounded-full absolute right-4 bottom-0"></div>
 		</div>
-		<p class="text-2xl max-w-2xl font-light leading-normal">
-			A simple theme for personal blog sites, created for Astro framework.
-		</p>
-		<div class="flex flex-wrap gap-8">
-			{
-				SocialLinks.map((link) => (
-					<a
-						class="text-xl text-primary dark:text-primary-dark underline hover:underline underline-offset-4"
-						href={link.url}
-						target="_blank"
+
+		<div
+			class="relative card-surface rounded-3xl p-8 md:p-12 overflow-hidden border border-white/30 dark:border-white/10"
+		>
+			<div class="flex flex-col gap-8 max-w-4xl">
+				<div class="pill w-fit">
+					<Icon name="mdi:crown" /> Kinghermy / Building in public
+				</div>
+				<div class="space-y-4">
+					<h1
+						class="text-5xl sm:text-6xl md:text-7xl font-black leading-tight tracking-tight"
 					>
-						{link.name}
+						<span class="bg-gradient-to-r from-primary via-amber-400 to-orange-400 bg-clip-text text-transparent">
+							You should see me in a crown.
+						</span>
+					</h1>
+					<p class="text-xl md:text-2xl max-w-3xl leading-relaxed opacity-90">
+						I tinker, ship, and share the messy middle so you can follow along.
+						Notes, experiments, and observations on what I’m building and
+						learning.
+					</p>
+				</div>
+
+				<div class="flex flex-wrap gap-4">
+					<a class="btn-primary" href={`${SITE_BASE}/blog`}>
+						Read the blog <Icon name="mdi:arrow-top-right-thin" />
 					</a>
-				))
-			}
+					<a class="btn-secondary" href={`${SITE_BASE}/about`}>
+						About me <Icon name="mdi:account-circle-outline" />
+					</a>
+				</div>
+
+				<div class="flex flex-wrap items-center gap-3 pt-2">
+					<div class="pill">
+						<Icon name="mdi:book-open-variant" /> {totalPosts} posts and
+						counting
+					</div>
+					<div class="pill">
+						<Icon name="mdi:rocket-launch-outline" /> Building in public
+					</div>
+				</div>
+
+				<div class="flex flex-wrap gap-3 pt-4">
+					{
+						SocialLinks.map((link) => (
+							<a
+								class="pill hover:-translate-y-[2px] transition-transform"
+								href={link.url}
+								target="_blank"
+							>
+								<Icon name="mdi:arrow-top-right" />
+								{link.name}
+							</a>
+						))
+					}
+				</div>
+			</div>
 		</div>
 	</main>
 
 	<!-- Recent Posts Section -->
 	<section class="app-container">
-		<h2 class="section-title">Recent Posts</h2>
+		<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+			<div>
+				<h2 class="section-title">Recent Posts</h2>
+				<p class="text-lg opacity-80">Fresh drops from the lab.</p>
+			</div>
+			<a class="btn-secondary" href={`${SITE_BASE}/blog`}
+				>Read all
+				<Icon size={20} name="mdi:arrow-right" />
+			</a>
+		</div>
 		<div class="posts-grid-container">
 			{posts.map((post) => <BlogCard post={post} />)}
 		</div>
-		<a class="btn-secondary" href="/blog"
-			>Read All
-			<Icon size={20} name="mdi:arrow-right" />
-		</a>
 	</section>
 
-	<!-- Recent Posts Section -->
-	<section class="app-container py-42 grid lg:grid-cols-2 gap-28 lg:gap-10">
-		<div class="space-y-6">
+	<section class="app-container py-42 grid lg:grid-cols-2 gap-12 lg:gap-10">
+		<div class="card-surface rounded-2xl p-8 space-y-6">
 			<h2 class="section-title">About Me</h2>
-			<p class="text-lg max-w-xl pb-4">
-				A brief introduction about yourself. You can include your profession,
-				hobbies, interests, or anything you'd like visitors to know about you.
+			<p class="text-lg leading-relaxed opacity-90">
+				Hey, I’m Kinghermy. I tinker with code, write down what I learn, and
+				share the messy middle of projects so others can follow along.
 			</p>
 			<a class="btn-secondary" href={`${SITE_BASE}/about`}
 				>Go to About
 				<Icon size={20} name="mdi:arrow-right" />
 			</a>
 		</div>
-		<div class="space-y-6">
+		<div class="card-surface rounded-2xl p-8 space-y-6">
 			<h2 class="section-title">Get in touch</h2>
-			<p class="text-lg max-w-xl">
-				Use the buttons below for my resume & email.
+			<p class="text-lg leading-relaxed opacity-90">
+				Want to collaborate or say hi? I’m always up for chatting about code,
+				ideas, and new experiments.
 			</p>
-			<div class="flex flex-wrap mt-auto space-x-4">
+			<div class="flex flex-wrap mt-auto gap-3">
 				<a
 					class="btn-primary"
-					href="mailto:example@email.com"
-					download
+					href="mailto:generalherminius@gmail.com"
 					target="_blank"
 					>Get in touch
 					<Icon height={20} name="mdi:email" />
 				</a>
-				<a class="btn-secondary" href="https://example.com" target="_blank"
-					>Download Resume
-					<Icon height={20} name="mdi:arrow-collapse-down" />
+				<a
+					class="btn-secondary"
+					href="https://github.com/hermy10"
+					target="_blank"
+					>View GitHub
+					<Icon height={20} name="mdi:arrow-right" />
 				</a>
 			</div>
 		</div>

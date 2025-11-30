@@ -1,6 +1,6 @@
-# Contributing to Saral Theme
+# Contributing to Kinghermy Blog
 
-Thank you for your interest in contributing to Saral Theme! We welcome contributions from the community.
+Thank you for your interest in contributing to Kinghermy Blog! We welcome contributions from the community.
 
 All kinds of contributions are welcome no matter the size.
 
@@ -9,8 +9,8 @@ All kinds of contributions are welcome no matter the size.
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/your-username/saral-theme-astro.git
-   cd saral-theme-astro
+   git clone https://github.com/your-username/kinghermy-blog.git
+   cd kinghermy-blog
    ```
 3. **Install dependencies**:
    ```bash
@@ -90,4 +90,4 @@ Feel free to open an issue for any questions about contributing or reach out to 
 
 ---
 
-Thank you for contributing to Saral Theme! 🎉
+Thank you for contributing to Kinghermy Blog! 🎉

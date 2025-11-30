@@ -15,26 +15,33 @@ const coverImagePath = `/src/assets/blogimages/${post.slug}/cover.jpg`
 
 <a
 	href={`${SITE_BASE}/blog/${post.slug}/`}
-	class="flex flex-col gap-4 pb-8 h-full group transition-colors"
+	class="group relative flex flex-col gap-4 h-full p-4 rounded-2xl card-surface transition-transform hover:-translate-y-1"
 >
-	{
-		blogImages[coverImagePath] && (
-			<Image
-				src={blogImages[coverImagePath]()}
-				alt={post.data.title}
-				class="object-cover rounded-xl aspect-video"
-			/>
-		)
-	}
-	<h4
-		class="text-2xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark group-hover:underline transition-colors"
-	>
-		{post.data.title}
-	</h4>
-	<p class="line-clamp-3 opacity-80">
-		{post.data.description}
-	</p>
-	<p class="uppercase text-sm mt-auto tracking-tight">
-		<FormattedDate date={post.data.pubDate} />
-	</p>
+	<div class="overflow-hidden rounded-xl">
+		{
+			blogImages[coverImagePath] && (
+				<Image
+					src={blogImages[coverImagePath]()}
+					alt={post.data.title}
+					class="object-cover aspect-video rounded-xl transition-transform duration-300 group-hover:scale-[1.03]"
+				/>
+			)
+		}
+	</div>
+	<div class="space-y-3">
+		<div class="flex items-center justify-between">
+			<span class="pill text-xs sm:text-sm">Blog post</span>
+			<span class="text-xs uppercase tracking-wide opacity-70">
+				<FormattedDate date={post.data.pubDate} />
+			</span>
+		</div>
+		<h4
+			class="text-2xl font-semibold leading-snug group-hover:text-primary dark:group-hover:text-primary-dark transition-colors"
+		>
+			{post.data.title}
+		</h4>
+		<p class="line-clamp-3 opacity-80">
+			{post.data.description}
+		</p>
+	</div>
 </a>

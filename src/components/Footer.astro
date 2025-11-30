@@ -1,18 +1,20 @@
 ---
-import { SocialLinks, WebsiteLinks } from '../consts'
-import LogoSVG from '../assets/logo.svg'
+import { SITE_BASE, SocialLinks, WebsiteLinks } from '../consts'
+import { Image } from 'astro:assets'
+import crownLogo from '../assets/crown.png'
 import { Icon } from 'astro-icon/components'
 
 const today = new Date()
 ---
 
 <footer>
-	<div
-		class="app-container grid md:grid-cols-3 gap-12 py-16 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
-	>
+	<div class="app-container py-14">
+		<div
+			class="card-surface rounded-2xl grid md:grid-cols-3 gap-12 p-10"
+		>
 		<div>
 			<a href="/" class="block w-fit" aria-label="Home">
-				<LogoSVG height={36} width={36} />
+				<Image src={crownLogo} alt="Kinghermy logo" width={36} height={36} />
 			</a>
 		</div>
 		<div>
@@ -22,7 +24,7 @@ const today = new Date()
 					WebsiteLinks.filter((link) => link.name !== 'Home').map((link) => (
 						<a
 							class="text-lg"
-							href={link.url}
+							href={`${SITE_BASE}/${link.url}`}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -63,7 +65,7 @@ const today = new Date()
 		<p class="text-left md:text-center w-full">
 			&copy; {today.getFullYear()} Source code available on <a
 				class="underline"
-				href="https://github.com/yashjawale/saral-theme-astro"
+				href="https://github.com/hermy10/kinghermy-blog"
 				target="_blank">GitHub</a
 			>
 		</p>

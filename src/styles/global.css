@@ -7,17 +7,29 @@
 	--font-sans: 'Inter Variable', sans-serif;
 	--font-mono: 'JetBrains Mono Variable', monospace;
 
-	--color-foreground: #0c0c0c;
-	--color-foreground-dark: #fafafa;
-	--color-background: #ffffff;
-	--color-background-dark: #2b2b2b;
-	--color-primary: #0784b5;
-	--color-primary-dark: #9bd4e4;
+	--color-foreground: #0b1021;
+	--color-foreground-dark: #e8edf7;
+	--color-background: #f7f9fc;
+	--color-background-dark: #05070f;
+	--color-primary: #f4c542;
+	--color-primary-dark: #ffd76c;
 }
 
 html {
 	scroll-padding-top: 6.5rem;
 	scroll-behavior: smooth;
+}
+
+body {
+	background: radial-gradient(circle at 20% 20%, #f7e8c8 0, transparent 26%),
+		radial-gradient(circle at 80% 0%, #cdd9ff 0, transparent 28%),
+		var(--color-background);
+}
+
+.dark body {
+	background: radial-gradient(circle at 20% 20%, #1a1033 0, transparent 28%),
+		radial-gradient(circle at 80% 0%, #0b3b4c 0, transparent 26%),
+		var(--color-background-dark);
 }
 
 .app-container {
@@ -29,15 +41,18 @@ html {
 }
 
 .btn-primary {
-	@apply w-fit flex gap-2 bg-foreground text-background dark:bg-foreground-dark dark:text-background-dark px-5 py-3 md:px-4 md:py-2 rounded-lg items-center mt-4 hover:opacity-75 transition-opacity;
+	@apply w-fit flex gap-2 items-center mt-4 px-5 py-3 md:px-4 md:py-2 rounded-full text-foreground transition-all;
+	background: linear-gradient(135deg, #f4c542, #f78c1f);
+	color: #0b0b0b;
+	box-shadow: 0 12px 30px rgba(244, 197, 66, 0.35);
 }
 
 .btn-secondary {
-	@apply w-fit flex gap-2 bg-foreground/10 text-foreground dark:bg-foreground-dark/10 dark:text-foreground-dark px-5 py-3 md:px-4 md:py-2 rounded-lg items-center mt-4 hover:opacity-75 transition-opacity;
+	@apply w-fit flex gap-2 bg-foreground/8 text-foreground dark:bg-foreground-dark/10 dark:text-foreground-dark px-5 py-3 md:px-4 md:py-2 rounded-full items-center mt-4 border border-foreground/10 dark:border-foreground-dark/15 hover:-translate-y-[2px] transition-all shadow-sm;
 }
 
 .section-title {
-	@apply text-4xl font-semibold pb-3;
+	@apply text-4xl font-semibold pb-3 tracking-tight;
 }
 
 .posts-grid-container {
@@ -47,4 +62,12 @@ html {
 /* Post content */
 .prose iframe {
 	@apply my-16 mx-auto w-11/12 aspect-video rounded-xl;
+}
+
+.card-surface {
+	@apply bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-white/40 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.35)];
+}
+
+.pill {
+	@apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm tracking-tight bg-foreground/5 dark:bg-white/10 text-foreground dark:text-foreground-dark border border-foreground/10 dark:border-white/10;
 }
