@@ -4,6 +4,8 @@ import { SITE_BASE, SocialLinks } from '../consts'
 import { Icon } from 'astro-icon/components'
 import BlogCard from '../components/BlogCard.astro'
 import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets'
+import crownAvatar from '../assets/crown.png'
 
 const allPosts = await getCollection('blog')
 const posts = allPosts
@@ -13,31 +15,51 @@ const totalPosts = allPosts.length
 ---
 
 <BaseLayout>
-	<main class="app-container relative py-28 md:py-36">
+	<main
+		class="app-container relative py-28 md:py-36 flex flex-col items-center text-center"
+	>
 		<div class="absolute inset-0 blur-3xl opacity-40 pointer-events-none">
-			<div class="w-72 h-72 bg-primary/40 rounded-full absolute -left-12 top-0"></div>
-			<div class="w-80 h-80 bg-primary/30 rounded-full absolute right-4 bottom-0"></div>
+			<div class="w-72 h-72 bg-primary/40 rounded-full absolute -left-12 top-0">
+			</div>
+			<div
+				class="w-80 h-80 bg-primary/30 rounded-full absolute right-4 bottom-0"
+			>
+			</div>
 		</div>
 
 		<div
-			class="relative card-surface rounded-3xl p-8 md:p-12 overflow-hidden border border-white/30 dark:border-white/10"
+			class="relative card-surface hero-surface rounded-3xl p-8 md:p-12 overflow-hidden max-w-5xl w-full text-center"
 		>
-			<div class="flex flex-col gap-8 max-w-4xl">
+			<div class="flex flex-col gap-8 max-w-4xl mx-auto items-center">
 				<div class="pill w-fit">
-					<Icon name="mdi:crown" /> Kinghermy / Building in public
+					<Icon name="mdi:crown" /> Kinghermy
+				</div>
+				<div class="flex flex-col items-center gap-4 pt-2">
+					<div
+						class="w-36 h-36 rounded-full overflow-hidden border-2 border-amber-300/80 bg-black/70 shadow-xl"
+					>
+						<Image
+							src={crownAvatar}
+							alt="Kinghermy display"
+							class="w-full h-full object-cover"
+						/>
+					</div>
+					<div class="space-y-1">
+						<p class="text-sm uppercase tracking-[0.16em] opacity-70">
+							Kinghermy's Blog
+						</p>
+					</div>
 				</div>
 				<div class="space-y-4">
 					<h1
-						class="text-5xl sm:text-6xl md:text-7xl font-black leading-tight tracking-tight"
+						class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 bg-clip-text text-transparent"
 					>
-						<span class="bg-gradient-to-r from-primary via-amber-400 to-orange-400 bg-clip-text text-transparent">
-							You should see me in a crown.
-						</span>
+						Ethical Hacker, Pen Tester, and Fraghead
 					</h1>
 					<p class="text-xl md:text-2xl max-w-3xl leading-relaxed opacity-90">
-						I tinker, ship, and share the messy middle so you can follow along.
-						Notes, experiments, and observations on what I’m building and
-						learning.
+						Ethical hacker and penetration tester who geeks out about fragrance
+						and philosophy. Field notes on security, scent, curiosity, and the
+						stories in between.
 					</p>
 				</div>
 
@@ -52,11 +74,11 @@ const totalPosts = allPosts.length
 
 				<div class="flex flex-wrap items-center gap-3 pt-2">
 					<div class="pill">
-						<Icon name="mdi:book-open-variant" /> {totalPosts} posts and
-						counting
+						<Icon name="mdi:book-open-variant" />
+						{totalPosts} posts and counting
 					</div>
 					<div class="pill">
-						<Icon name="mdi:rocket-launch-outline" /> Building in public
+						<Icon name="mdi:bug-outline" /> Curiosity & bug hunting
 					</div>
 				</div>
 
@@ -80,7 +102,9 @@ const totalPosts = allPosts.length
 
 	<!-- Recent Posts Section -->
 	<section class="app-container">
-		<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+		<div
+			class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+		>
 			<div>
 				<h2 class="section-title">Recent Posts</h2>
 				<p class="text-lg opacity-80">Fresh drops from the lab.</p>

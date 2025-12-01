@@ -1,5 +1,6 @@
 export const SITE_TITLE = "Kinghermy's Blog"
-export const SITE_DESCRIPTION = 'You should see me in a crown.'
+export const SITE_DESCRIPTION =
+	"Ethical hacking notes, penetration testing stories, and fragrance musings from Kinghermy."
 
 // If you deploy to a subdirectory, set the `WEBSITE_BASE` here.
 // e.g. '/blog' if you are deploying to example.com/blog
@@ -13,7 +14,7 @@ export const SocialLinks = [
 	},
 	{
 		name: 'LinkedIn',
-		url: 'https://www.linkedin.com/in/',
+		url: 'https://www.linkedin.com/in/oluwaseyi-abdul-735ba0169/',
 	},
 	{
 		name: 'X / Twitter',

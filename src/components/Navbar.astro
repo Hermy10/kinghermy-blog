@@ -103,7 +103,7 @@ import crownLogo from '../assets/crown.png'
 	}
 
 	function addThemeEventListeners() {
-		themeButtons = document.querySelectorAll('.theme-button')
+		const themeButtons = document.querySelectorAll('.theme-button')
 		themeButtons.forEach((button) => {
 			button.addEventListener('click', () => {
 				themeButtons.forEach((btn) => btn.classList.remove('active'))

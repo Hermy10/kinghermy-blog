@@ -21,8 +21,8 @@ html {
 }
 
 body {
-	background: radial-gradient(circle at 20% 20%, #f7e8c8 0, transparent 26%),
-		radial-gradient(circle at 80% 0%, #cdd9ff 0, transparent 28%),
+	background: radial-gradient(circle at 20% 20%, #fbeedb 0, transparent 28%),
+		radial-gradient(circle at 80% 0%, #d6e4ff 0, transparent 32%),
 		var(--color-background);
 }
 
@@ -70,4 +70,15 @@ body {
 
 .pill {
 	@apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm tracking-tight bg-foreground/5 dark:bg-white/10 text-foreground dark:text-foreground-dark border border-foreground/10 dark:border-white/10;
+}
+
+.hero-surface {
+	background: linear-gradient(135deg, rgba(240, 246, 255, 0.9), rgba(230, 228, 255, 0.85));
+	box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.dark .hero-surface {
+	background: linear-gradient(135deg, rgba(12, 18, 42, 0.9), rgba(42, 26, 68, 0.85));
+	border-color: rgba(255, 255, 255, 0.05);
 }
