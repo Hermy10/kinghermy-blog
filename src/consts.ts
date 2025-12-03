@@ -1,6 +1,6 @@
 export const SITE_TITLE = "Kinghermy's Blog"
 export const SITE_DESCRIPTION =
-	"Ethical hacking notes, penetration testing stories, and fragrance musings from Kinghermy."
+	'Ethical hacking notes, penetration testing stories, and fragrance musings from Kinghermy.'
 
 // If you deploy to a subdirectory, set the `WEBSITE_BASE` here.
 // e.g. '/blog' if you are deploying to example.com/blog

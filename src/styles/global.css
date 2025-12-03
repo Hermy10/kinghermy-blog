@@ -21,13 +21,15 @@ html {
 }
 
 body {
-	background: radial-gradient(circle at 20% 20%, #fbeedb 0, transparent 28%),
+	background:
+		radial-gradient(circle at 20% 20%, #fbeedb 0, transparent 28%),
 		radial-gradient(circle at 80% 0%, #d6e4ff 0, transparent 32%),
 		var(--color-background);
 }
 
 .dark body {
-	background: radial-gradient(circle at 20% 20%, #1a1033 0, transparent 28%),
+	background:
+		radial-gradient(circle at 20% 20%, #1a1033 0, transparent 28%),
 		radial-gradient(circle at 80% 0%, #0b3b4c 0, transparent 26%),
 		var(--color-background-dark);
 }
@@ -73,12 +75,20 @@ body {
 }
 
 .hero-surface {
-	background: linear-gradient(135deg, rgba(240, 246, 255, 0.9), rgba(230, 228, 255, 0.85));
+	background: linear-gradient(
+		135deg,
+		rgba(240, 246, 255, 0.9),
+		rgba(230, 228, 255, 0.85)
+	);
 	box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
 	border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .dark .hero-surface {
-	background: linear-gradient(135deg, rgba(12, 18, 42, 0.9), rgba(42, 26, 68, 0.85));
+	background: linear-gradient(
+		135deg,
+		rgba(12, 18, 42, 0.9),
+		rgba(42, 26, 68, 0.85)
+	);
 	border-color: rgba(255, 255, 255, 0.05);
 }

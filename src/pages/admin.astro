@@ -3,7 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { SITE_BASE } from '../consts'
 ---
 
-<BaseLayout title="Admin | Kinghermy" description="Local editor to draft posts.">
+<BaseLayout
+	title="Admin | Kinghermy"
+	description="Local editor to draft posts."
+>
 	<section class="app-container pt-32 pb-16 space-y-8" id="admin-root">
 		<div class="flex items-start justify-between gap-4">
 			<div class="space-y-3">
@@ -85,8 +88,8 @@ import { SITE_BASE } from '../consts'
 						name="content"
 						required
 						class="w-full rounded-lg border border-foreground/15 bg-white/60 dark:bg-white/5 px-4 py-3 min-h-[260px]"
-						placeholder="## Heading&#10;Body text goes here..."
-					></textarea>
+						placeholder="## Heading
+Body text goes here..."></textarea>
 				</label>
 
 				<div class="flex flex-wrap gap-3">
@@ -108,8 +111,8 @@ import { SITE_BASE } from '../consts'
 				<h3 class="text-2xl font-semibold">Preview</h3>
 				<pre
 					id="output"
-					class="text-sm whitespace-pre-wrap bg-black/80 text-white p-4 rounded-lg min-h-[200px] overflow-auto"
-				></pre>
+					class="text-sm whitespace-pre-wrap bg-black/80 text-white p-4 rounded-lg min-h-[200px] overflow-auto">
+				</pre>
 			</div>
 		</div>
 
@@ -149,8 +152,8 @@ import { SITE_BASE } from '../consts'
 				</div>
 				<pre
 					id="image-output"
-					class="text-sm whitespace-pre bg-black/80 text-white p-3 rounded-lg min-h-[80px] overflow-auto"
-				></pre>
+					class="text-sm whitespace-pre bg-black/80 text-white p-3 rounded-lg min-h-[80px] overflow-auto">
+				</pre>
 			</div>
 
 			<div class="card-surface rounded-2xl p-6 space-y-3">
@@ -268,7 +271,7 @@ import { SITE_BASE } from '../consts'
 			return
 		}
 		navigator.clipboard?.writeText(latestContent)
-		setOutput('Copied to clipboard.\n\n' + latestContent)
+		setOutput(`Copied to clipboard.\n\n${latestContent}`)
 	})
 
 	downloadBtn?.addEventListener('click', () => {
@@ -284,7 +287,7 @@ import { SITE_BASE } from '../consts'
 		a.click()
 		document.body.removeChild(a)
 		URL.revokeObjectURL(url)
-		setOutput('Downloaded markdown file.\n\n' + content)
+		setOutput(`Downloaded markdown file.\n\n${content}`)
 	})
 
 	form?.addEventListener('input', () => {
@@ -311,7 +314,7 @@ import { SITE_BASE } from '../consts'
 			return
 		}
 		navigator.clipboard?.writeText(imageOutput.textContent)
-		imageOutput.textContent = 'Copied.\n' + imageOutput.textContent
+		imageOutput.textContent = `Copied.\n${imageOutput.textContent}`
 	})
 
 	// Simple client-side gate (not secure; local-only)
@@ -323,11 +326,14 @@ import { SITE_BASE } from '../consts'
 			adminRoot?.classList.remove('blur-sm', 'pointer-events-none')
 			return
 		}
+		// Local-only guard: prompt is acceptable here; no backend involved.
+		// eslint-disable-next-line no-alert
 		const code = prompt('Enter admin access code')
 		if (code === ACCESS_CODE) {
 			localStorage.setItem('adminAccessGranted', 'true')
 			adminRoot?.classList.remove('blur-sm', 'pointer-events-none')
 		} else {
+			// eslint-disable-next-line no-alert
 			alert('Incorrect code. Reload to try again.')
 			adminRoot?.classList.add('blur-sm', 'pointer-events-none')
 		}
