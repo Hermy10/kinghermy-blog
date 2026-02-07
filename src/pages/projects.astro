@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { Icon } from 'astro-icon/components'
+
+type Project = {
+	slug: string
+	title: string
+	status: string
+	tags: string[]
+	summary: string
+	commands?: string[]
+	repo?: string
+	bullets?: string[]
+}
+
+const projects: Project[] = [
+	{
+		slug: 'alfa-scout',
+		title: 'Alfa Scout (Linux CLI)',
+		status: 'Prototype',
+		tags: ['Alfa AWUS036ACM', 'Wi-Fi utility', 'Linux'],
+		summary:
+			'Field Wi-Fi helper for the Alfa AWUS036ACM: monitor mode toggles, surveys, Markdown reports, and authorized captures using iw/ip/tshark.',
+		commands: [
+			'python3 tools/alfa-scout/alfa_scout.py status --iface wlan0',
+			'python3 tools/alfa-scout/alfa_scout.py list-ifaces',
+			'python3 tools/alfa-scout/alfa_scout.py monitor-on --iface wlan0',
+			'python3 tools/alfa-scout/alfa_scout.py survey --iface wlan0 --out reports/survey.json',
+			'python3 tools/alfa-scout/alfa_scout.py capture --iface wlan0 --channel 6 --seconds 45 --bssid <target-bssid>',
+			'python3 tools/alfa-scout/alfa_scout.py report --in reports/survey.json --out reports/survey.md',
+		],
+		repo: 'https://github.com/hermy10/kinghermy-blog/tree/main/tools/alfa-scout',
+	},
+	{
+		slug: 'lab-queue',
+		title: 'Lab Queue',
+		status: 'New',
+		tags: ['Workflow', 'Linux CLI'],
+		summary:
+			'Lightweight task queue for lab/engagement work with scope reminders and Markdown export.',
+		commands: [
+			'python3 tools/lab-queue/lab_queue.py add --title "Audit guest Wi-Fi" --scope "Office lab only" --severity high',
+			'python3 tools/lab-queue/lab_queue.py list',
+			'python3 tools/lab-queue/lab_queue.py next',
+			'python3 tools/lab-queue/lab_queue.py done --id <id>',
+			'python3 tools/lab-queue/lab_queue.py export --out queue.md',
+		],
+		repo: 'https://github.com/hermy10/kinghermy-blog/tree/main/tools/lab-queue',
+	},
+]
+---
+
+<BaseLayout
+	title="Projects | Kinghermy"
+	description="Hands-on utilities, experiments, and field tools built by Kinghermy."
+>
+	<section class="app-container pt-32 pb-10 space-y-8">
+		<div class="space-y-4">
+			<div class="pill w-fit">
+				<Icon name="mdi:tools" /> Projects
+			</div>
+			<h1 class="text-5xl sm:text-6xl font-black tracking-tight text-amber-400">
+				Field tools and experiments
+			</h1>
+			<p class="text-xl max-w-3xl opacity-85 leading-relaxed">
+				Utilities I build for real-world use—designed for security testing,
+				network diagnostics, and learning in the open.
+			</p>
+		</div>
+
+		<div class="flex items-center justify-between flex-wrap gap-3">
+			<h2 class="section-title pb-0">Active lineup</h2>
+			<p class="pill">Linux-first · security-focused</p>
+		</div>
+
+		<div class="posts-grid-container">
+			{
+				projects.map((project) => (
+					<article class="card-surface rounded-2xl p-6 space-y-4">
+						<div class="flex flex-wrap gap-2 items-center">
+							<span class="pill">{project.status}</span>
+							{project.tags.map((tag) => (
+								<span class="pill">{tag}</span>
+							))}
+						</div>
+						<h3 class="text-2xl font-semibold">{project.title}</h3>
+						<p class="opacity-85 leading-relaxed">{project.summary}</p>
+
+						{project.commands?.length && (
+							<div class="space-y-2">
+								<p class="text-sm opacity-70">Quick start</p>
+								<pre class="text-sm bg-black/80 text-white p-3 rounded-lg overflow-auto">
+									{project.commands.join('\n')}
+								</pre>
+								<p class="text-xs opacity-70">
+									Requires <code>iw</code>, <code>iproute2</code>,{' '}
+									<code>tshark</code> (or Wireshark), and sudo. Authorized
+									networks only.
+								</p>
+							</div>
+						)}
+
+						{project.bullets?.length && (
+							<ul class="list-disc list-inside space-y-2 opacity-85 text-sm">
+								{project.bullets.map((item) => (
+									<li>{item}</li>
+								))}
+							</ul>
+						)}
+
+						<div class="flex flex-wrap gap-3">
+							{project.repo && (
+								<a class="btn-secondary" href={project.repo} target="_blank">
+									View README
+								</a>
+							)}
+							{project.slug === 'alfa-scout' && (
+								<a class="btn-primary" href="#alfa-scout">
+									Deep dive <Icon name="mdi:arrow-down" />
+								</a>
+							)}
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section id="alfa-scout" class="app-container pb-16 space-y-6">
+		<div class="card-surface rounded-2xl p-8 space-y-6">
+			<div class="flex flex-wrap gap-3 items-center">
+				<span class="pill">Alfa Scout</span>
+				<span class="pill">Prototype</span>
+				<span class="pill">AWUS036ACM</span>
+			</div>
+			<h2 class="text-3xl font-bold flex items-center gap-2">
+				<Icon name="mdi:wifi-star" /> Deep dive
+			</h2>
+			<div class="grid md:grid-cols-2 gap-5">
+				<div class="space-y-3">
+					<h3 class="text-xl font-semibold">What it does</h3>
+					<ul class="list-disc list-inside space-y-2 opacity-85">
+						<li>
+							Monitor-mode toggles with guardrails so NetworkManager stops
+							flapping your iface.
+						</li>
+						<li>
+							Channel-aware surveys that log SSID/BSSID, channel, RSSI,
+							timestamps to JSON plus Markdown summaries.
+						</li>
+						<li>
+							Authorized handshake/traffic captures with optional BSSID +
+							channel targeting.
+						</li>
+						<li>
+							Portable outputs to drop into Wireshark or attach to reports.
+						</li>
+					</ul>
+				</div>
+				<div class="space-y-3">
+					<h3 class="text-xl font-semibold">Workflow</h3>
+					<ol class="list-decimal list-inside space-y-2 opacity-85">
+						<li>Set monitor mode on the Alfa AWUS036ACM.</li>
+						<li>
+							List interfaces, then run per-band surveys to pick cleanest
+							channels.
+						</li>
+						<li>Capture short, authorized samples on target SSIDs/BSSIDs.</li>
+						<li>
+							Export JSON/PCAPNG and Markdown for validation and reporting.
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="grid md:grid-cols-3 gap-4">
+				<div class="card-surface rounded-xl p-4 space-y-2">
+					<h4 class="font-semibold flex items-center gap-2">
+						<Icon name="mdi:chip" /> Stack
+					</h4>
+					<ul class="text-sm opacity-80 space-y-1">
+						<li>Python CLI</li>
+						<li>iw / iproute2 / nmcli</li>
+						<li>tshark for captures</li>
+					</ul>
+				</div>
+				<div class="card-surface rounded-xl p-4 space-y-2">
+					<h4 class="font-semibold flex items-center gap-2">
+						<Icon name="mdi:shield-check" /> Guardrails
+					</h4>
+					<p class="text-sm opacity-80 leading-relaxed">
+						Authorized use only; built-in reminders to keep captures scoped.
+						Keep notes of what you have permission to test.
+					</p>
+				</div>
+				<div class="card-surface rounded-xl p-4 space-y-2">
+					<h4 class="font-semibold flex items-center gap-2">
+						<Icon name="mdi:progress-check" /> Status
+					</h4>
+					<p class="text-sm opacity-80 leading-relaxed">
+						Prototype. Next up: scheduled sweeps, Markdown report export, and
+						auto-resume after NetworkManager restarts.
+					</p>
+				</div>
+			</div>
+
+			<div class="flex flex-wrap gap-3">
+				<a class="btn-primary" href="mailto:generalherminius@gmail.com"
+					>Request early build</a
+				>
+				<a
+					class="btn-secondary"
+					href="https://github.com/hermy10"
+					target="_blank"
+				>
+					Follow progress
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section id="lab-queue" class="app-container pb-16 space-y-6">
+		<div class="card-surface rounded-2xl p-8 space-y-4">
+			<div class="flex flex-wrap gap-3 items-center">
+				<span class="pill">Lab Queue</span>
+				<span class="pill">New</span>
+				<span class="pill">Workflow</span>
+			</div>
+			<h2 class="text-3xl font-bold flex items-center gap-2">
+				<Icon name="mdi:clipboard-list" /> Queue your lab work
+			</h2>
+			<p class="opacity-85 leading-relaxed">
+				Tiny CLI to keep lab tasks organized with scope reminders and Markdown
+				export—so “what am I allowed to touch?” stays front and center.
+			</p>
+			<div class="grid md:grid-cols-2 gap-5">
+				<div class="space-y-2">
+					<h3 class="text-xl font-semibold">Quick start</h3>
+					<pre
+						class="text-sm bg-black/80 text-white p-3 rounded-lg overflow-auto">
+python3 tools/lab-queue/lab_queue.py add --title "Audit guest Wi-Fi" --scope "Office lab only" --severity high
+python3 tools/lab-queue/lab_queue.py list
+python3 tools/lab-queue/lab_queue.py next
+python3 tools/lab-queue/lab_queue.py done --id &lt;id&gt;
+python3 tools/lab-queue/lab_queue.py export --out queue.md
+					</pre>
+				</div>
+				<div class="space-y-2">
+					<h3 class="text-xl font-semibold">What it tracks</h3>
+					<ul class="list-disc list-inside space-y-2 opacity-85">
+						<li>Queue of targets/experiments with severity.</li>
+						<li>Scope/authorization note per item.</li>
+						<li>Markdown export for reporting and handoff.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="flex flex-wrap gap-3">
+				<a
+					class="btn-secondary"
+					href="https://github.com/hermy10/kinghermy-blog/tree/main/tools/lab-queue"
+					target="_blank"
+				>
+					View README
+				</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
